@@ -1,6 +1,6 @@
 import React from 'react';
 import Cell from './Cell';
-import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format } from "date-fns";
+import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format, setDate, isToday } from "date-fns";
 
 const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]  
 
@@ -29,6 +29,11 @@ const Calendar = ({ value, onChange }) => {
     const prevYear = () => onChange && onChange(subYears(value, 1));
     const nextYear = () => onChange && onChange(addYears(value, 1));
 
+    const handleClickDate = (date) => {
+        const selectedDate = setDate(value, date);
+        onChange && onChange(selectedDate);
+    };
+
   return (
     <div className='w-[400px] border-t-2 border-l-2 bg-white'>
         <div className='grid grid-cols-7 items-center justify-center text-center'>
@@ -49,8 +54,11 @@ const Calendar = ({ value, onChange }) => {
 
             {/* Days */}
             {Array.from({ length: numDays }).map((_, index) => {
-                const date = index + 1
-                return <Cell key={index} content={date} />
+                const date = index + 1;
+                const fullDate = new Date(value.getFullYear(), value.getMonth(), date);
+                const isSelected = isToday(fullDate);
+                
+                return <Cell key={index} content={date} isSelected={isSelected} handleClick={() => handleClickDate(date)}/>
             })}
 
             {/* Suffix Days */}
