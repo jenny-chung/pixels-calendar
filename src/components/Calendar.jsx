@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Cell from './Cell';
-import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format, setDate, isToday } from "date-fns";
+import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format, setDate, isToday, isFuture } from "date-fns";
+import PixelModal from './PixelModal';
 
 const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]  
 
 const Calendar = ({ value, onChange }) => {
+
+    const [showModal, setShowModal] = useState(false);
+    const [moods, setMoods] = useState({});
 
     const startDate = startOfMonth(value);
     const endDate = endOfMonth(value);
@@ -29,13 +33,25 @@ const Calendar = ({ value, onChange }) => {
     const prevYear = () => onChange && onChange(subYears(value, 1));
     const nextYear = () => onChange && onChange(addYears(value, 1));
 
+    const handleOpenModal = (date) => {
+        if (isFuture(date)) {
+            // Hide pixel modal if date is in future
+            setShowModal(false);
+        } else {
+            setShowModal(true);
+        }
+    }
+    
     const handleClickDate = (date) => {
         const selectedDate = setDate(value, date);
         onChange && onChange(selectedDate);
+        handleOpenModal(selectedDate);
     };
 
   return (
+    <>
     <div className='w-[400px] border-t-2 border-l-2 bg-white'>
+    {showModal && <PixelModal showModal={setShowModal} selectedDate={value} moods={moods} onChange={setMoods}/>}
         <div className='grid grid-cols-7 items-center justify-center text-center'>
             {/* Header */}
             <Cell content="<<" title="Previous Year" handleClick={prevYear}/>
@@ -56,9 +72,12 @@ const Calendar = ({ value, onChange }) => {
             {Array.from({ length: numDays }).map((_, index) => {
                 const date = index + 1;
                 const fullDate = new Date(value.getFullYear(), value.getMonth(), date);
-                const isSelected = isToday(fullDate);
+                const formatted = format(fullDate, "LLLL d, yyyy");
+                console.log({formatted})
+                const isDateToday = isToday(fullDate);
+                const isDateFuture = isFuture(fullDate);
                 
-                return <Cell key={index} content={date} isSelected={isSelected} handleClick={() => handleClickDate(date)}/>
+                return <Cell key={index} content={date} colour={moods[formatted]} isToday={isDateToday} isFuture={isDateFuture} handleClick={() => handleClickDate(date)}/>
             })}
 
             {/* Suffix Days */}
@@ -66,6 +85,7 @@ const Calendar = ({ value, onChange }) => {
 
         </div>
     </div>
+    </>
   )
 }
 
