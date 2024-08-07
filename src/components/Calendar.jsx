@@ -3,23 +3,20 @@ import Cell from './Cell';
 import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format, setDate, isToday, isFuture } from "date-fns";
 import PixelModal from './PixelModal';
 
-const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]  
-
 const Calendar = ({ value, onChange }) => {
-
+    
     const [showModal, setShowModal] = useState(false);
     const [moods, setMoods] = useState({});
+
+    const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]  
 
     const startDate = startOfMonth(value);
     const endDate = endOfMonth(value);
     console.log({startDate});
     console.log({endDate});
 
-    const month = startDate.toLocaleString('default', { month: 'long' });
-    console.log({month});
-
-    const year = startDate.getFullYear().toString();
-    console.log({year});
+    // const month = startDate.toLocaleString('default', { month: 'long' });
+    // const year = startDate.getFullYear().toString();
 
     const numDays = endDate.getDate();
     console.log({numDays});
@@ -34,12 +31,7 @@ const Calendar = ({ value, onChange }) => {
     const nextYear = () => onChange && onChange(addYears(value, 1));
 
     const handleOpenModal = (date) => {
-        if (isFuture(date)) {
-            // Hide pixel modal if date is in future
-            setShowModal(false);
-        } else {
-            setShowModal(true);
-        }
+        setShowModal(!isFuture(date));
     }
     
     const handleClickDate = (date) => {
@@ -53,6 +45,7 @@ const Calendar = ({ value, onChange }) => {
     <div className='w-[400px] border-t-2 border-l-2 bg-white'>
     {showModal && <PixelModal showModal={setShowModal} selectedDate={value} moods={moods} onChange={setMoods}/>}
         <div className='grid grid-cols-7 items-center justify-center text-center'>
+            
             {/* Header */}
             <Cell content="<<" title="Previous Year" handleClick={prevYear}/>
             <Cell content="<" title="Previous Month" handleClick={prevMonth}/>
@@ -74,10 +67,11 @@ const Calendar = ({ value, onChange }) => {
                 const fullDate = new Date(value.getFullYear(), value.getMonth(), date);
                 const formatted = format(fullDate, "LLLL d, yyyy");
                 console.log({formatted})
+
                 const isDateToday = isToday(fullDate);
                 const isDateFuture = isFuture(fullDate);
                 
-                return <Cell key={index} content={date} colour={moods[formatted]} isToday={isDateToday} isFuture={isDateFuture} handleClick={() => handleClickDate(date)}/>
+                return <Cell key={index} content={date} backgroundColour={moods[formatted]} isToday={isDateToday} isFuture={isDateFuture} handleClick={() => handleClickDate(date)}/>
             })}
 
             {/* Suffix Days */}
