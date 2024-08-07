@@ -1,4 +1,4 @@
-# React + Vite
+# pixels
 
 This project is a React-based calendar application built using Vite, a fast and efficient build tool for modern web applications. The project provides a minimal setup to get React working with Vite, including Hot Module Replacement (HMR) and some ESLint rules.
 
