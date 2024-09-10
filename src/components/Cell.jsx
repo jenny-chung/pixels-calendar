@@ -16,7 +16,7 @@ const Cell = ( { content, className, title, backgroundColour, handleClick, isTod
         title={title}>
         <p className="z-10">{content}</p>
         {/* {isSelected ? <Pixel colour={colour} content={content}/> : <p>{content}</p>} */}
-        {isToday && <Circle colour="bg-orange-300" />}
+        {isToday && <Circle colour="bg-pink-600" />}
     </div>    
   )
 }
