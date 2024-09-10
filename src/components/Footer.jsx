@@ -9,10 +9,10 @@ const Footer = () => {
     // </div>
     //      <div className='text-center text-xs mt-auto'>♡ made by jen</div>
     // </footer>
-    <footer className="bg-gradient-to-r from-red-200 via-orange-200 to-pink-100 py-2 text-center fixed bottom-0 min-w-full">
+    <footer className="bg-gradient-to-r from-red-200 via-orange-200 to-pink-100 py-2 text-center">
         <span className="text-xs">made by jen ♡ </span>
     </footer>
   )
 }
 
-export default Footer
+export default Footer;
