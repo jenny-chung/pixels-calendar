@@ -3,12 +3,13 @@ import Cell from './Cell';
 import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format, setDate, isToday, isFuture } from "date-fns";
 import PixelModal from './PixelModal';
 
-const Calendar = ({ value, onChange }) => {
+const Calendar = ({ view, value, onChange }) => {
     
     const [showModal, setShowModal] = useState(false);
+    const [date, setCalendarDate] = useState(null);
     const [moods, setMoods] = useState({});
 
-    const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]  
+    const daysOfWeek = view === 'monthly' ? ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"] : ["S", "M", "T", "W", "T", "F", "S"];
 
     const startDate = startOfMonth(value);
     const endDate = endOfMonth(value);
@@ -20,7 +21,6 @@ const Calendar = ({ value, onChange }) => {
 
     const numDays = endDate.getDate();
     console.log({numDays});
-
     const prefixDays = startDate.getDay();
     const suffixDays = 6 - endDate.getDay();
 
@@ -30,28 +30,46 @@ const Calendar = ({ value, onChange }) => {
     const prevYear = () => onChange && onChange(subYears(value, 1));
     const nextYear = () => onChange && onChange(addYears(value, 1));
 
-    const handleOpenModal = (date) => {
-        setShowModal(!isFuture(date));
-    }
+    // const handleOpenModal = (date) => {
+    //     setShowModal(!isFuture(date));
+    // }
     
-    const handleClickDate = (date) => {
-        const selectedDate = setDate(value, date);
+    const handleClickDate = (day) => {
+        const selectedDate = setDate(value, day);
+        console.log({selectedDate});
+        
+        setCalendarDate(selectedDate);
         onChange && onChange(selectedDate);
-        handleOpenModal(selectedDate);
+        if (!isFuture(selectedDate)) {
+            // Open pixel modal to choose mood for day if date is not in the future
+            setShowModal(true);
+        }
     };
 
   return (
     <>
     <div className='w-[400px] border-t-2 border-l-2 bg-white'>
-    {showModal && <PixelModal showModal={setShowModal} selectedDate={value} moods={moods} onChange={setMoods}/>}
+    {showModal && <PixelModal showModal={setShowModal} selectedDate={date} moods={moods} onChange={setMoods}/>}
         <div className='grid grid-cols-7 items-center justify-center text-center'>
             
             {/* Header */}
+
+            {view === 'monthly' ? (
+            <>
             <Cell content="<<" title="Previous Year" handleClick={prevYear}/>
             <Cell content="<" title="Previous Month" handleClick={prevMonth}/>
             <Cell content={format(value, 'LLLL yyyy')} className='col-span-3' />
             <Cell content=">" title="Next Month" handleClick={nextMonth}/>
             <Cell content=">>" title="Next Year" handleClick={nextYear}/>
+            </>) : 
+            (<>
+            <Cell content="" />
+            <Cell content="" />
+            <Cell content={format(value, 'LLLL yyyy')} className='col-span-3' />
+            <Cell content="" />
+            <Cell content="" />
+            </>
+            )}
 
             {/* Days of Week */}
             {daysOfWeek.map((day, index) => (
@@ -83,4 +101,4 @@ const Calendar = ({ value, onChange }) => {
   )
 }
 
-export default Calendar
+export default Calendar;
