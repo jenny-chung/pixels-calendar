@@ -29,10 +29,6 @@ const Calendar = ({ view, value, onChange }) => {
   
     const prevYear = () => onChange && onChange(subYears(value, 1));
     const nextYear = () => onChange && onChange(addYears(value, 1));
-
-    // const handleOpenModal = (date) => {
-    //     setShowModal(!isFuture(date));
-    // }
     
     const handleClickDate = (day) => {
         const selectedDate = setDate(value, day);

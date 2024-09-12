@@ -30,7 +30,7 @@ function App() {
       <Navbar view={view} handleView={setView} />
       <div className='flex flex-col flex-grow justify-center items-center gap-4 pt-8 pb-16'>
         {/* <p className='text-sm'>Selected Date: {format(currentDate, "LLLL d, yyyy")}</p> */}
-        {view === 'monthly' && <button onClick={handleSetToday} className='bg-pink-900 text-white hover:bg-pink-800 active:bg-pink-700/50 border rounded px-4 py-2'>Today</button>}
+        <button onClick={handleSetToday} className='bg-pink-900 text-white hover:bg-pink-800 active:bg-pink-700/50 border rounded px-4 py-2'>Today</button>
        
         {view === 'monthly' ? 
         (<Calendar view={view} value={currentDate} onChange={setCurrentDate} />) : (renderYearlyView())
