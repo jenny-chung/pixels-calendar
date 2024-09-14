@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Cell from './Cell';
 import { startOfMonth, endOfMonth, subMonths, addMonths, subYears, addYears, format, setDate, isToday, isFuture } from "date-fns";
 import PixelModal from './PixelModal';
+import { MoodContext } from '../MoodContext';
 
 const Calendar = ({ view, value, onChange }) => {
     
     const [showModal, setShowModal] = useState(false);
     const [date, setCalendarDate] = useState(null);
-    const [moods, setMoods] = useState({});
+
+    const { moods, updateMoods } = useContext(MoodContext);
 
     const daysOfWeek = view === 'monthly' ? ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"] : ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -20,7 +22,7 @@ const Calendar = ({ view, value, onChange }) => {
     // const year = startDate.getFullYear().toString();
 
     const numDays = endDate.getDate();
-    console.log({numDays});
+    // console.log({numDays});
     const prefixDays = startDate.getDay();
     const suffixDays = 6 - endDate.getDay();
 
@@ -32,7 +34,7 @@ const Calendar = ({ view, value, onChange }) => {
     
     const handleClickDate = (day) => {
         const selectedDate = setDate(value, day);
-        console.log({selectedDate});
+        // console.log({selectedDate});
         
         setCalendarDate(selectedDate);
         onChange && onChange(selectedDate);
@@ -45,11 +47,10 @@ const Calendar = ({ view, value, onChange }) => {
   return (
     <>
     <div className='w-[400px] border-t-2 border-l-2 bg-white'>
-    {showModal && <PixelModal showModal={setShowModal} selectedDate={date} moods={moods} onChange={setMoods}/>}
+    {showModal && <PixelModal showModal={setShowModal} selectedDate={date} onChange={updateMoods}/>}
         <div className='grid grid-cols-7 items-center justify-center text-center'>
             
             {/* Header */}
-
             {view === 'monthly' ? (
             <>
             <Cell content="<<" title="Previous Year" handleClick={prevYear}/>
@@ -79,13 +80,13 @@ const Calendar = ({ view, value, onChange }) => {
             {Array.from({ length: numDays }).map((_, index) => {
                 const date = index + 1;
                 const fullDate = new Date(value.getFullYear(), value.getMonth(), date);
-                const formatted = format(fullDate, "LLLL d, yyyy");
-                console.log({formatted})
+                const formattedDate = format(fullDate, "LLLL d, yyyy");
+                console.log({formatted: formattedDate})
 
                 const isDateToday = isToday(fullDate);
                 const isDateFuture = isFuture(fullDate);
                 
-                return <Cell key={index} content={date} backgroundColour={moods[formatted]} isToday={isDateToday} isFuture={isDateFuture} handleClick={() => handleClickDate(date)}/>
+                return <Cell key={index} content={date} backgroundColour={moods[formattedDate]} isToday={!(formattedDate in moods) && isDateToday} isFuture={isDateFuture} handleClick={() => handleClickDate(date)}/>
             })}
 
             {/* Suffix Days */}
