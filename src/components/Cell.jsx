@@ -8,7 +8,7 @@ const Cell = ( { content, className, title, backgroundColour, handleClick, isTod
     <div
         className={
           clsx(`${backgroundColour} h-14 flex relative items-center justify-center border-b-2 border-r-2`, 
-          {"cursor-pointer hover:bg-gray-100 active:bg-gray-200" : handleClick && !isFuture},
+          {"cursor-pointer hover:bg-sky-50 active:bg-gray-200/50" : handleClick && !isFuture},
           {"cursor-not-allowed" : isFuture},
           className
         )}
