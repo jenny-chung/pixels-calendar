@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import PixelColours, { default_palette } from './PixelColour';
 
 // Pixel modal for choosing mood for specific day 
-const PixelModal = ({ showModal, moods, onChange, selectedDate }) => {
+const PixelModal = ({ showModal, onChange, selectedDate }) => {
 
     const [selectedMood, setSelectedMood] = useState(null);
 
@@ -13,12 +13,7 @@ const PixelModal = ({ showModal, moods, onChange, selectedDate }) => {
 
     const handleSave = () => {
         if (selectedMood) {
-            const updatedMoods = {
-                ...moods,
-                [format(selectedDate, "LLLL d, yyyy")]: selectedMood
-            }
-            console.log({updatedMoods});
-            onChange(updatedMoods);
+            onChange(selectedDate, selectedMood);
         }
         closeModal();
     }
@@ -28,7 +23,7 @@ const PixelModal = ({ showModal, moods, onChange, selectedDate }) => {
     }
 
   return (
-    <div className='fixed z-50 inset-0 bg-slate-600/65 border overflow-y-auto h-full w-full px-4'>
+    <div className='fixed z-50 inset-0 bg-slate-600/65 border px-4'>
         <div className='relative top-40 mx-auto shadow-xl rounded-md bg-orange-50 max-w-xs'>
 
             {/* Close Popup Button */}
