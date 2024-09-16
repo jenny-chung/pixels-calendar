@@ -10,11 +10,11 @@ export const palette_1 = [
 ];
 
 export const palette_2 = [
-    { colour: 'bg-amber-300', activeColour: 'bg-amber-500', label: 'amazing' },
-    { colour: 'bg-teal-300', activeColour: 'bg-teal-400', label: 'relaxing' },
-    { colour: 'bg-purple-300', activeColour: 'bg-purple-300', label: 'productive' },
-    { colour: 'bg-blue-600', activeColour: 'bg-blue-800', label: 'stressed' },
-    { colour: 'bg-fuchsia-400', activeColour: 'bg-fuchsia-600', label: 'boring' },
+    { colour: 'bg-cyan-600', activeColour: 'bg-amber-500', label: 'amazing' },
+    { colour: 'bg-cyan-200', activeColour: 'bg-teal-400', label: 'good' },
+    { colour: 'bg-orange-200', activeColour: 'bg-purple-300', label: 'meh' },
+    { colour: 'bg-rose-200', activeColour: 'bg-blue-800', label: 'bad' },
+    { colour: 'bg-red-300', activeColour: 'bg-fuchsia-600', label: 'awful' },
 ];
 
 export const default_palette = palette_2;
@@ -50,8 +50,8 @@ function PixelColours({ handleMoodSelection }) {
             <div className='flex flex-row items-center gap-4 w-full' key={index}>
                 {/* Colour */}
                 <button onClick={() => handleMoodSelection(index)}
-                        className={`transition-transform duration-200 ease-in-out transform hover:scale-105 active:scale-110 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-black
-                        ${item.colour} active:${item.activeColour} border-2 border-black px-4 py-4`}>
+                        className={`transition-transform duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:ring-black
+                        ${item.colour} active:${item.activeColour} border-2 border-white px-4 py-4`}>
                 </button>
                 {/* Colour Label */}
                 {editingIndex === index ? (
