@@ -1,8 +1,12 @@
-import { useState } from 'react'
-import Calendar from './components/Calendar'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+import { useState } from 'react';
+import Calendar from './components/Calendar';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import PixelStats from './components/PixelStats.jsx';
 import { format } from 'date-fns';
+import { Amplify } from 'aws-amplify';
+import config from './amplifyconfiguration.json';
+Amplify.configure(config);
 
 function App() {
 
@@ -28,6 +32,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col flex-grow">
       <Navbar view={view} handleView={setView} />
+      <PixelStats />
       <div className='flex flex-col flex-grow justify-center items-center gap-4 pt-8 pb-16'>
         {/* <p className='text-sm'>Selected Date: {format(currentDate, "LLLL d, yyyy")}</p> */}
         <button onClick={handleSetToday} className='bg-pink-900 text-white hover:bg-pink-800 active:bg-pink-700/50 border rounded px-4 py-2'>Today</button>
